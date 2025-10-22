@@ -1,61 +1,94 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🛠️ Sistema de Gestão de Tarefas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é um sistema completo de gerenciamento de tarefas, desenvolvido com Laravel e MySQL. Ele oferece autenticação de usuários e permite o controle eficiente de projetos e tarefas, facilitando a organização, acompanhamento e colaboração dentro de equipes.
 
-## About Laravel
+## 🚀 Tecnologias Utilizadas
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Laravel (Última versão estável)
+- Laravel Breeze (Autenticação)
+- Banco de dados MySQL (Base de dados)
+- Tailwild (Para o layout)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📌 1. Instalação do Projeto
+Siga os passos abaixo para instalar e configurar o sistema em sua máquina.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+### 🔹 1.1 Clonar o Repositório
+```sh
+git clone git@github.com:rodrigoaguerra/teste-leme.git
+cd teste-leme
+```
+### 🔹 1.2 Instalar Dependências
+```sh
+composer install
+npm install
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 🔹 1.3 Configurar o Banco de Dados
+1. **Crie um banco de dados no MySQL**
+2. **Copie o arquivo de configuração**
+```sh
+cp .env.example .env
+```
+3. **Edite o arquivo** .env e configure a conexão com o banco:
+```ini
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=nome_do_banco
+DB_USERNAME=root
+DB_PASSWORD=sua_senha
+```
+### 🔹 1.4 Gerar a Key do Laravel
+```sh
+php artisan key:generate
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 🔹 1.5 Executar as Migrations e Seeders
+```sh
+php artisan migrate --seed
+```
+#### O Seeder cria um usuário automaticamente 1:
+ - **Email:** test1@example.com
+ - **Senha:** password
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+#### O Seeder cria um usuário automaticamente 2:
+ - **Email:** test2@example.com
+ - **Senha:** password
 
-## Laravel Sponsors
+#### O Seeder cria um usuário automaticamente 3:
+ - **Email:** test3@example.com
+ - **Senha:** password
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+#### O Seeder cria um usuário automaticamente 4:
+ - **Email:** test4@example.com
+ - **Senha:** password
 
-### Premium Partners
+#### O Seeder cria um usuário automaticamente 5:
+ - **Email:** test5@example.com
+ - **Senha:** password
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 🔹 1.6 Compilar o front-end
+```sh
+npm run build
+```
 
-## Contributing
+### 🔹 1.7 Iniciar o Servidor
+```sh
+php artisan serve
+```
+O sistema estará disponível em: http://localhost:8000
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+## 📌 2. Funcionalidades
+- ✅ Login e Registro de Usuários
+- ✅ Gerenciamento de Projetos
+- ✅ Gerenciamento de Tarefas
+- ✅ Painel básico com Tailwild
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+## 📌 3. Créditos
+Desenvolvido por **Rodrigo Alves Guerra 🖥️🚀**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 📌 4. Demo
+[Sistema em produção](https://leme.rodrigoalvesguerra.com.br)
