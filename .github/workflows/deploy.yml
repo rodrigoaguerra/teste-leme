@@ -23,15 +23,8 @@ jobs:
         npm run build
 
     - name: Deploy to Hostinger via SSH
-      uses: appleboy/scp-action@v0.1.4
-      with:
-        host: ${{ secrets.HOSTINGER_HOST }}
-        username: ${{ secrets.HOSTINGER_USER }}
-        key: ${{ secrets.HOSTINGER_KEY }}
-        port: ${{ secrets.HOSTINGER_PORT }}
-        verbose: true
-        source: "."
-        target: "${{ secrets.HOSTINGER_PATH }}"
+      run: |
+          rsync -av --delete --exclude='.env' --exclude='storage/' ./ ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }}:${{ secrets.HOSTINGER_PATH }}
 
     - name: Run migrations and seed
       uses: appleboy/ssh-action@v0.1.10
