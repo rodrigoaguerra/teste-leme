@@ -19,17 +19,17 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <!-- Formulário de busca -->
-                    <form action="{{ route('projects.index') }}" method="GET" class="flex flex-wrap gap-4 mb-4 items-center">
+                    <form action="{{ route('projects.index') }}" method="GET" class="grid grid-cols-12 mb-4 gap-4 items-center">
                         <input
                             type="text"
                             name="search"
                             value="{{ request('search') }}"
                             placeholder="Buscar por título ou descrição..."
-                            class="border border-gray-300 rounded-l px-4 py-3 w-full focus:outline-none focus:ring focus:border-blue-400"
+                            class="col-span-6 border border-gray-300 rounded-l px-4 py-3 w-full focus:outline-none focus:ring focus:border-blue-400"
                         >
                         <button
                             type="submit"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600"
+                            class="col-span-2 bg-blue-500 text-white px-4 py-3 rounded-r hover:bg-blue-600"
                         >
                             Buscar
                         </button>
@@ -46,23 +46,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($projects as $project)
-                            <tr class="border-b hover:bg-gray-50">
-                                <td class="p-3">{{ $project->title }}</td>
-                                <td class="p-3">{{ $project->start_date }}</td>
-                                <td class="p-3">{{ $project->end_date }}</td>
-                                <td class="p-3 text-center space-x-2">
-                                    <a href="{{ route('projects.show', $project) }}" class="text-blue-600 hover:underline">Ver</a>
-                                    <a href="{{ route('projects.edit', $project) }}" class="text-yellow-600 hover:underline">Editar</a>
-                                    <form action="{{ route('projects.destroy', $project) }}" method="POST" class="inline">
-                                        @csrf @method('DELETE')
-                                        <button onclick="return confirm('Deseja excluir este projeto?')" class="text-red-600 hover:underline">
-                                            Excluir
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
+                            @forelse($projects as $project)
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="p-3">{{ $project->title }}</td>
+                                    <td class="p-3">{{ $project->start_date }}</td>
+                                    <td class="p-3">{{ $project->end_date }}</td>
+                                    <td class="p-3 text-center space-x-2">
+                                        <a href="{{ route('projects.show', $project) }}" class="text-blue-600 hover:underline">Ver</a>
+                                        <a href="{{ route('projects.edit', $project) }}" class="text-yellow-600 hover:underline">Editar</a>
+                                        <form action="{{ route('projects.destroy', $project) }}" method="POST" class="inline">
+                                            @csrf @method('DELETE')
+                                            <button onclick="return confirm('Deseja excluir este projeto?')" class="text-red-600 hover:underline">
+                                                Excluir
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="5" class="text-center text-gray-500 p-4">Nenhum projeto encontrado.</td></tr>
+                            @endforelse
                         </tbody>
                     </table>
 

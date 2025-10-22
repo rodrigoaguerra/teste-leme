@@ -36,13 +36,16 @@
                     <br />
                     <p><strong>Tarefas:</strong></p>
                     <ul>
-                        @foreach($project->tasks as $task)
+                        @forelse($project->tasks as $task)
                             <li>
                                 <a href="{{ route('tasks.show', $task) }}" class="text-blue-600 hover:underline">
                                     {{ $task->title }}
                                 </a>
                             </li>
-                        @endforeach
+                        @empty
+                            <li>Nenhuma tarefa encontrada.</li>
+                            <li><a href="{{ route('tasks.create', ['project' => $project->id]) }}" class="text-blue-600 hover:underline">Criar tarefa</a></li>
+                        @endforelse
                     </ul>
 
                     <a href="{{ route('projects.index') }}" class="mt-4 inline-block bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">
