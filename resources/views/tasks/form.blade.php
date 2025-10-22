@@ -1,9 +1,22 @@
 @csrf
+@php
+    $projectId = request('project'); // pega o ?project=2
+@endphp
+@if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <strong>Ops!</strong> Corrija os erros abaixo:
+        <ul class="mt-2 list-disc list-inside">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="mb-4">
     <label class="block font-medium">Projeto</label>
     <select id="project_id" name="project_id" class="w-full border p-2 rounded">
         @foreach($projects as $project)
-            <option value="{{ $project->id }}" {{ old('project_id', $task->project_id ?? '') == $project->id  ? 'selected' : '' }} >{{ $project->title }}</option>
+            <option value="{{ $project->id }}" {{ old('project_id', $task->project_id ?? $projectId ?? '' ) == $project->id  ? 'selected' : '' }} >{{ $project->title }}</option>
         @endforeach
     </select>
 </div>

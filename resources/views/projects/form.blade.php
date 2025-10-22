@@ -1,7 +1,17 @@
+@csrf
 @php
     $selected = old('members', isset($project) ? $project->members->pluck('user_id')->toArray() : []);
 @endphp
-@csrf
+@if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <strong>Ops!</strong> Corrija os erros abaixo:
+        <ul class="mt-2 list-disc list-inside">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="space-y-4">
     <div>
         <label class="block font-medium">Título</label>
