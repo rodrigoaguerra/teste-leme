@@ -27,7 +27,7 @@ jobs:
           rsync -av --delete \
           --exclude='.env' \
           --exclude='storage/' \
-          -e "ssh -p ${{ secrets.HOSTINGER_PORT }}" \
+          -e "ssh -i ${{ secrets.HOSTINGER_KEY }} -p ${{ secrets.HOSTINGER_PORT }}" \
           ./ ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }}:${{ secrets.HOSTINGER_PATH }}
 
     - name: Run migrations and seed
