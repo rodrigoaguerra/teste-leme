@@ -27,12 +27,23 @@
                     <p><strong>Membros:</strong> {{ implode(', ', $project->members->pluck('user.name')->toArray()) }}</p>
 
                     @if($project->attachment)
-                    <p class="mt-2">
-                        <a href="{{ asset('storage/'.$project->attachment) }}" target="_blank" class="text-blue-600 underline">
-                            Ver arquivo anexado
-                        </a>
-                    </p>
+                        <p class="mt-2">
+                            <a href="{{ asset('storage/'.$project->attachment) }}" target="_blank" class="text-blue-600 underline">
+                                Ver arquivo anexado
+                            </a>
+                        </p>
                     @endif
+                    <br />
+                    <p><strong>Tarefas:</strong></p>
+                    <ul>
+                        @foreach($project->tasks as $task)
+                            <li>
+                                <a href="{{ route('tasks.show', $task) }}" class="text-blue-600 hover:underline">
+                                    {{ $task->title }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
 
                     <a href="{{ route('projects.index') }}" class="mt-4 inline-block bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">
                         Voltar

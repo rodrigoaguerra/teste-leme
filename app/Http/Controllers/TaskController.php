@@ -13,12 +13,23 @@ class TaskController extends Controller
     /**
      * Exibe todas as tarefas do usuário logado.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::where('user_id', Auth::id())
-            ->with('project')
-            ->latest()
-            ->paginate(10);
+        // Inicia a query das tasks do usuário logado
+        $query = Task::where('user_id', Auth::id())->with('project');
+
+        // Filtro por status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filtro por prioridade
+        if ($request->filled('priority')) {
+            $query->where('priority', $request->priority);
+        }
+
+        // Ordena pela mais recente e pagina
+        $tasks = $query->latest()->paginate(10)->withQueryString();
 
         return view('tasks.index', compact('tasks'));
     }
@@ -59,6 +70,8 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'due_date' => 'nullable|date',
             'priority' => 'required|in:baixa,média,alta',
+            'attachments' => 'nullable|array',
+            'attachments.*' => 'nullable|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         // Verifica se o usuário é membro do projeto
@@ -71,7 +84,16 @@ class TaskController extends Controller
             abort(403, 'Você não tem permissão para adicionar tarefas a este projeto.');
         }
 
-        Task::create([
+        // Upload the attachments
+        $attachments = [];
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $attachment) {
+                $path = $attachment->store('tasks', 'public');
+                $attachments[] = ['file_path' => $path];
+            }
+        }
+
+        $task = Task::create([
             'project_id' => $request->project_id,
             'user_id' => $request->user_id,
             'title' => $request->title,
@@ -81,7 +103,17 @@ class TaskController extends Controller
             'status' => 'pendente',
         ]);
 
+        $task->attachments()->createMany($attachments);
+
         return redirect()->route('tasks.index')->with('success', 'Tarefa criada com sucesso!');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Task $task)
+    {
+        return view('tasks.show', compact('task'));
     }
 
     public function edit(Task $task)
@@ -117,9 +149,24 @@ class TaskController extends Controller
             'due_date' => 'nullable|date',
             'priority' => 'required|in:baixa,média,alta',
             'status' => 'required|in:pendente,em_andamento,concluída',
+            'attachments' => 'nullable|array',
+            'attachments.*' => 'nullable|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         $task->update($request->all());
+
+        // Upload the attachments
+        if ($request->hasFile('attachments')) {
+            // remove existing attachments
+            $task->attachments()->delete();
+
+            foreach ($request->file('attachments') as $attachment) {
+                $path = $attachment->store('tasks', 'public');
+
+                // add new attachment
+                $task->attachments()->create(['file_path' => $path]);
+            }
+        }
 
         return redirect()->route('tasks.index')->with('success', 'Tarefa atualizada com sucesso!');
     }
@@ -127,6 +174,9 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $this->authorizeTask($task);
+
+        $task->attachments()->delete();
+
         $task->delete();
 
         return redirect()->route('tasks.index')->with('success', 'Tarefa excluída com sucesso!');

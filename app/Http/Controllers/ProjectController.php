@@ -14,19 +14,29 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $userId = Auth::id();
+        $search = $request->input('search'); // recebe o termo de busca
 
-        $projects = Project::where('user_id', $userId) // é dono
-            ->orWhereHas('members', function ($query) use ($userId) {
-                $query->where('user_id', $userId); // é membro via ProjectMember
+        $projects = Project::where(function ($query) use ($userId) {
+                $query->where('user_id', $userId) // é dono
+                    ->orWhereHas('members', function ($query) use ($userId) {
+                        $query->where('user_id', $userId); // é membro via ProjectMember
+                    });
+            })
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+                });
             })
             ->with(['members.user']) // carrega os membros e seus usuários
             ->latest()
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString(); // mantém o termo de busca na paginação
 
-        return view('projects.index', compact('projects'));
+        return view('projects.index', compact('projects', 'search'));
     }
 
     /**
@@ -142,6 +152,21 @@ class ProjectController extends Controller
         }
 
         $project->delete();
+
         return redirect()->route('projects.index')->with('success', 'Projeto excluído com sucesso!');
+    }
+
+    /**
+     * List members of a project.
+     */
+    public function members($projectId)
+    {
+        $project = Project::with('members.user') // supondo relação ProjectMember -> user()
+            ->findOrFail($projectId);
+
+        // monta lista de usuários (membros + dono, se quiser)
+        $users = $project->members->pluck('user')->prepend($project->owner)->unique('id')->values();
+
+        return response()->json($users);
     }
 }

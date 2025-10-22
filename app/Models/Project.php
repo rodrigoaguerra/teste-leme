@@ -29,4 +29,9 @@ class Project extends Model
     {
         return $this->hasMany(ProjectMember::class);
     }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id'); // dono do projeto
+    }
 }

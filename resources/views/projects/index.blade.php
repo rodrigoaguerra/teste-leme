@@ -18,6 +18,24 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <!-- Formulário de busca -->
+                    <form action="{{ route('projects.index') }}" method="GET" class="flex flex-wrap gap-4 mb-4 items-center">
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ request('search') }}"
+                            placeholder="Buscar por título ou descrição..."
+                            class="border border-gray-300 rounded-l px-4 py-3 w-full focus:outline-none focus:ring focus:border-blue-400"
+                        >
+                        <button
+                            type="submit"
+                            class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600"
+                        >
+                            Buscar
+                        </button>
+                    </form>
+
+                    <!-- Tabela de projetos -->
                     <table class="w-full bg-white shadow rounded">
                         <thead>
                             <tr class="bg-gray-200 text-left">
@@ -49,7 +67,7 @@
                     </table>
 
                     <div class="mt-4">
-                        {{-- {{ $projects->links() }} --}}
+                        {{ $projects->links() }}
                     </div>
                 </div>
             </div>
