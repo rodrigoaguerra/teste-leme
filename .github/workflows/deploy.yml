@@ -24,7 +24,11 @@ jobs:
 
     - name: Deploy to Hostinger via SSH
       run: |
-          rsync -av --delete --exclude='.env' --exclude='storage/' ./ ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }}:${{ secrets.HOSTINGER_PATH }}
+          rsync -av --delete \
+          --exclude='.env' \
+          --exclude='storage/' \
+          -e "ssh -p ${{ secrets.HOSTINGER_PORT }}" \
+          ./ ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }}:${{ secrets.HOSTINGER_PATH }}
 
     - name: Run migrations and seed
       uses: appleboy/ssh-action@v0.1.10
