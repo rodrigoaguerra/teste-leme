@@ -22,17 +22,19 @@ jobs:
         npm audit fix
         npm run build
         
-    - name: Add Hostinger host key to known_hosts
+    - name: Setup SSH key
       run: |
         mkdir -p ~/.ssh
-        ssh-keyscan -p ${{ secrets.HOSTINGER_PORT }} ${{ secrets.HOSTINGER_HOST }} >> ~/.ssh/known_hosts
+        echo "${{ secrets.HOSTINGER_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
 
-    - name: Deploy to Hostinger via RSYNC
+    - name: Deploy Hostinger via rsync
       run: |
-          rsync -av --delete \
+        ssh-keyscan -p ${{ secrets.HOSTINGER_PORT }} ${{ secrets.HOSTINGER_HOST }} >> ~/.ssh/known_hosts
+        rsync -av --delete \
           --exclude='.env' \
           --exclude='storage/' \
-          -e "ssh -i ${{ secrets.HOSTINGER_KEY }} -p ${{ secrets.HOSTINGER_PORT }}" \
+          -e "ssh -i ~/.ssh/id_rsa -p ${{ secrets.HOSTINGER_PORT }}" \
           ./ ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }}:${{ secrets.HOSTINGER_PATH }}
 
     - name: Run migrations and seed
