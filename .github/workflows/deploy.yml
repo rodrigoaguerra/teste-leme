@@ -21,8 +21,13 @@ jobs:
         npm ci
         npm audit fix
         npm run build
+        
+    - name: Add Hostinger host key to known_hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -p ${{ secrets.HOSTINGER_PORT }} ${{ secrets.HOSTINGER_HOST }} >> ~/.ssh/known_hosts
 
-    - name: Deploy to Hostinger via SSH
+    - name: Deploy to Hostinger via RSYNC
       run: |
           rsync -av --delete \
           --exclude='.env' \
