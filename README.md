@@ -43,8 +43,11 @@ DB_PASSWORD=sua_senha
 ```sh
 php artisan key:generate
 ```
-
-### 🔹 1.5 Executar as Migrations e Seeders
+### 🔹 1.5 Criar o link simbólico para arquivos
+```sh
+php artisan storage:link
+```
+### 🔹 1.6 Executar as Migrations e Seeders
 ```sh
 php artisan migrate --seed
 ```
@@ -68,12 +71,12 @@ php artisan migrate --seed
  - **Email:** test5@example.com
  - **Senha:** password
 
-### 🔹 1.6 Compilar o front-end
+### 🔹 1.7 Compilar o front-end
 ```sh
 npm run build
 ```
 
-### 🔹 1.7 Iniciar o Servidor
+### 🔹 1.8 Iniciar o Servidor
 ```sh
 php artisan serve
 ```
